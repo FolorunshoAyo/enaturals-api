@@ -57,13 +57,13 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 
 //GET PRODUCT
-router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+router.get("/find/:productName", verifyTokenAndAdmin, async (req, res) => {
     const query = req.query.new;
 
     try{
-        const products = await Product.findById(req.params.id);
+        const products = await Product.find({name: req.params.productName});
 
-        res.status(200).json(product);
+        res.status(200).json(products);
     }catch(err){
         res.status(500).json(err);
     }
@@ -109,8 +109,6 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
         }
         else{
             products = await Product.find().sort({createdAt: -1});
-
-
         }
         res.status(200).json(products);
     }catch(err){
