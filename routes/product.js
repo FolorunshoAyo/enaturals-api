@@ -55,15 +55,38 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-
 //GET PRODUCT
-router.get("/find/:productName", verifyTokenAndAdmin, async (req, res) => {
-    const query = req.query.new;
+router.get("/find/:productName", async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
 
     try{
-        const products = await Product.find({name: req.params.productName});
+        const products = await Product.find({productName: req.params.productName});
 
         res.status(200).json(products);
+    }catch(err){
+        res.status(500).json(err);
+    }
+});
+
+
+//GET RELATED PRODUCT
+router.get("/category/:productName", async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    const categoriesParams = req.query;
+    const retrievedTags = [];
+
+    for (key in categoriesParams){
+        retrievedTags.push(categoriesParams[key]); 
+    }
+
+    try{
+        const relatedProducts = await Product.find({ categories: { $all: retrievedTags } });
+
+        // FILTER PRODUCT BY EXCEPTING THE PRODUCT NAME PARAM
+        const filterProducts = relatedProducts.filter(relatedProduct => relatedProduct.productName !== req.params.productName);
+
+        res.status(200).json(filterProducts);
     }catch(err){
         res.status(500).json(err);
     }
@@ -81,12 +104,13 @@ router.get("/majorProducts", async (req, res) => {
 });
 
 // GET ALL PRODUCTS
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     const qNew = req.query.new;
     const qCategory = req.query.category;
     const qMax = req.query.max;
     const qMin = req.query.min;
-    const qSortBy = req.query.sortby
+    const qSortBy = req.query.sortby;
 
     try{
         let products;
