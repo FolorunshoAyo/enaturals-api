@@ -88,6 +88,19 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
     }catch(err){
         res.status(500).json(err);
     }
-})
+});
+
+
+// GET ALL PRODUCT REVIEW FOR A PRODUCT
+router.get("/:id", async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    try{
+        const productReviews = await ProductReview.find({ProductID: req.params.id});
+
+        res.status(200).json(productReviews);
+    }catch (err){
+        res.status(500).json(err);
+    }
+});
 
 module.exports = router;
