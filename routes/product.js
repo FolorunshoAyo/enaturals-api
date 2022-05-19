@@ -57,8 +57,6 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 //GET PRODUCT
 router.get("/find/:productName", async (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-
     try{
         const products = await Product.find({productName: req.params.productName});
 
@@ -71,8 +69,6 @@ router.get("/find/:productName", async (req, res) => {
 
 //GET RELATED PRODUCT
 router.get("/category/:productName", async (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-
     const categoriesParams = req.query;
     const retrievedTags = [];
 
@@ -105,7 +101,6 @@ router.get("/majorProducts", async (req, res) => {
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
     const qNew = req.query.new;
     const qCategory = req.query.category;
     const qMax = req.query.max;
