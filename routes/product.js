@@ -13,9 +13,34 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
     const newProduct = new Product(req.body);
 
     try{
-        const savedProduct = await newProduct.save();
+        const fetchProducts = await Product.find();
+        const findExactProduct = await Product.find({productName: req.body.productName, size: req.body.size});
+        const findProductWithSimCategories = await Product.find({productName: req.body.productName, categories: req.body.categories});
+        const findProductWithSizeandCategories = await Product.find({productName: req.body.productName, size: req.body.size, categories: req.body.categories});
+        const isMajorProduct = await Product.find({productName: req.body.productName, majorProduct: req.body.majorProduct});
 
-        res.status(200).json(savedProduct);
+        if(fetchProducts.length !== 0){
+
+            if(findExactProduct.length !== 0){
+                res.status(401).json("A product with the same name and size exists");
+            }else if(findProductWithSizeandCategories.length === 0){
+                const savedProduct = await newProduct.save();
+                res.status(200).json(savedProduct);
+            }else if (findProductWithSimCategories.length === 0){
+                res.status(401).json("The categories selected does not tally with the product name as gotten from other similar product");
+            }else if (isMajorProduct.length === 0){
+                res.status(401).json("This product is a major product");
+            }else{
+                const savedProduct = await newProduct.save();
+
+                res.status(200).json(savedProduct);
+            }
+
+        }else{
+            const savedProduct = await newProduct.save();
+
+            res.status(200).json(savedProduct);
+        }
     }catch(err){
         res.status(500).json(err);
     }
