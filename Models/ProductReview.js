@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 
 const ProductReviewSchema = new mongoose.Schema(
     {
-        name: {type: String, required: true},
+        firstname: {type: String, required: true},
+        lastname: {type: String, required: true},
+        fullname: {type: String, required: true},
+        productImg: {type: String, required: true},
         email: {type: String, required: true},
         review: {type: String, required: true},
         status: {type: String, required: true, default: "pending"},

@@ -6,11 +6,12 @@ const dotenv = require("dotenv");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
-const cartRoute = require("./routes/cart");
 const orderRoute = require("./routes/order");
 // const reviewsRoute = require("./routes/reviews");
 const postRoute = require("./routes/post");
 const productReviewRoute = require("./routes/productReview");
+const slideRoute = require("./routes/slide");
+const testimonialRoute = require("./routes/testimonial");
 
     dotenv.config();
 
@@ -26,11 +27,12 @@ const productReviewRoute = require("./routes/productReview");
     app.use("/api/users", userRoute);
     app.use("/api/auth", authRoute);
     app.use("/api/products", productRoute);
-    app.use("/api/cart", cartRoute);
     app.use("/api/orders", orderRoute);
     // app.use("/api/reviews", reviewsRoute);
     app.use("/api/blogPosts", postRoute);
     app.use("/api/productReview", productReviewRoute);
+    app.use("/api/slides", slideRoute);
+    app.use("/api/testimonials", testimonialRoute);
 
     
     app.listen(process.env.PORT || 5000, () => {

@@ -3,6 +3,8 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 
 const router = require("express").Router();
 
+// CREATE USER 
+
 // UPDATE USER
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     if(req.body.password) {
