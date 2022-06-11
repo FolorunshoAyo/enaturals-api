@@ -10,17 +10,15 @@ const AddressSchema = new mongoose.Schema(
         },
         addresses: [
             {
-                address: {
-                    firstName: {type: String,required: true},
-                    lastName: {type: String, required: true},
-                    phoneNo: {type: String, required: true},
-                    addPhoneNo: {type: String},
-                    additionalInfo:{type: String},
-                    addressNo: {type: String, required: true},
-                    address: {type: String, required: true},
-                    region: {type: String, required: true},
-                    city: {type: String, required: true},
-                }
+                firstName: {type: String,required: true},
+                lastName: {type: String, required: true},
+                phoneNo: {type: String, required: true},
+                addPhoneNo: {type: String},
+                additionalInfo:{type: String},
+                isDefault:{type: Boolean, required: true},
+                address: {type: String, required: true},
+                region: {type: String, required: true},
+                city: {type: String, required: true}
             }
         ]         
     },

@@ -12,6 +12,8 @@ const postRoute = require("./routes/post");
 const productReviewRoute = require("./routes/productReview");
 const slideRoute = require("./routes/slide");
 const testimonialRoute = require("./routes/testimonial");
+const picturesRoute = require("./routes/pictureGallery");
+const videosRoute = require("./routes/videoGallery");
 
     dotenv.config();
 
@@ -29,10 +31,12 @@ const testimonialRoute = require("./routes/testimonial");
     app.use("/api/products", productRoute);
     app.use("/api/orders", orderRoute);
     // app.use("/api/reviews", reviewsRoute);
-    app.use("/api/blogPosts", postRoute);
+    app.use("/api/blogs", postRoute);
     app.use("/api/productReview", productReviewRoute);
     app.use("/api/slides", slideRoute);
     app.use("/api/testimonials", testimonialRoute);
+    app.use("/api/pictures", picturesRoute);
+    app.use("/api/videos", videosRoute);
 
     
     app.listen(process.env.PORT || 5000, () => {

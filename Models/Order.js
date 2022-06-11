@@ -8,19 +8,29 @@ const OrderSchema = new mongoose.Schema(
             ref: 'User',
             required: true
         },
+        username: {
+            type: String,
+            required: true
+        },
         products: [
             {
-                productID: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Product'
+                product: {
+                    productName: {type: String, required: true},
+                    productImg: {type: String, required: true},
+                    productSize: {type: String, required: true}
                 },
                 quantity: {
                     type: Number,
-                    default: 1,
+                    required: true
+                },
+                price: {
+                    type: Number,
+                    required: true
                 }
             }
         ],
         amount: {type: Number, required: true},
+        transaction: {type: String, required: true},
         status: {type: String, default: "pending"}              
     },
     {timestamps: true}

@@ -1,4 +1,4 @@
-const Post = require("../Models/Post");
+const BlogPost = require("../Models/BlogPost");
 const Comment = require("../Models/Comment");
 const Reply = require("../Models/Reply");
 
@@ -11,23 +11,23 @@ const router = require("express").Router();
 
 // CREATE POST
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-    const newPost = new Post(req.body);
+    const newBlogPost = new BlogPost(req.body);
 
     try{
-        const savedPost = await newPost.save();
+        const savedBlogPost = await newBlogPost.save();
 
-        res.status(200).json(savedPost);
+        res.status(200).json(savedBlogPost);
     }catch(err){
         res.status(500).json(err);
     }
 });
 
 //GET RECENT POSTS
-router.get("/newPosts", async (req, res) => {
+router.get("/newBlogPosts", async (req, res) => {
     try{
-        const newPosts = await Post.find().sort({_id: -1}).limit(3);
+        const newBlogPosts = await BlogPost.find().sort({_id: -1}).limit(3);
 
-        res.status(200).json(newPosts);
+        res.status(200).json(newBlogPosts);
     }catch (err){
         res.status(500).json(err);
     }
@@ -36,11 +36,11 @@ router.get("/newPosts", async (req, res) => {
 //UPDATE POST
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
     try{
-        const updatedPost = await Post.findByIdAndUpdate(req.params.id, {
+        const updatedBlogPost = await BlogPost.findByIdAndUpdate(req.params.id, {
             $set: req.body
         }, {new: true});
 
-        res.status(200).json(updatedPost);
+        res.status(200).json(updatedBlogPost);
     }catch(err){
         res.status(500).json(err);
     }
@@ -49,9 +49,9 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 // DELETE POST
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     try{
-        await Post.findByIdAndDelete(req.params.id);
+        await BlogPost.findByIdAndDelete(req.params.id);
 
-        res.status(200).json("Post has been deleted");
+        res.status(200).json("BlogPost has been deleted");
     }catch(err){
         res.status(500).json(err);
     }
@@ -61,9 +61,9 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 //GET POST
 router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
     try{
-        const Posts = await Post.findById(req.params.id);
+        const BlogPosts = await BlogPost.findById(req.params.id);
 
-        res.status(200).json(Post);
+        res.status(200).json(BlogPost);
     }catch(err){
         res.status(500).json(err);
     }
@@ -75,19 +75,19 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
     const qCategory = req.query.category;
 
     try{
-        let Posts;
+        let BlogPosts;
 
         if(qNew){
-            Posts = await Post.find().sort({createdAt: -1}).limit(1);
+            BlogPosts = await BlogPost.find().sort({createdAt: -1}).limit(1);
         }else if(qCategory){
-            Posts = await Post.find({categories: {
+            BlogPosts = await BlogPost.find({categories: {
                 $in: [qCategory]
             }});
         }else{
-            Posts = await Post.find();
+            BlogPosts = await BlogPost.find();
         }
 
-        res.status(200).json(Posts);
+        res.status(200).json(BlogPosts);
     }catch(err){
         res.status(500).json(err);
     }
@@ -117,7 +117,7 @@ router.get("/comments", async (req, res) => {
 
 // ADD COMMENT 
 router.post("/:id/comment", verifyTokenAndAuthorization, async (req, res) => {
-    const newComment = new Comment({PostID: req.params.id, ...req.body});
+    const newComment = new Comment({BlogPostID: req.params.id, ...req.body});
 
     try{
         const savedComment = await newComment.save();
