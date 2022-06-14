@@ -8,9 +8,9 @@ const UserSchema = new mongoose.Schema(
         lastname: {type: String, required: true},
         email: {type: String, required: true, unique: true},
         phoneno: {type: String, required: true},
-        gender: {type: String },
+        gender: {type: String, required: true },
         dob: { type: String },
-        password: { type: String },
+        password: { type: String, required: true },
         isAdmin: {
             type: Boolean,
             default: false
