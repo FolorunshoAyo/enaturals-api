@@ -3,6 +3,8 @@ const User = require("../models/User");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 
+const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
+
 //REGISTER
 router.post("/register", async (req, res) => {
     const newUser = new User({
@@ -56,6 +58,11 @@ router.post("/login", async (req, res) => {
     }catch (err){
         return res.status(500).json(err);
     }
+});
+
+//CHECK TOKEN VALIDITY
+router.get("/", verifyToken, (req, res) => {
+    res.status(201).json("Welcome back");
 });
 
 

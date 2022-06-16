@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
 });
 
 // ADD COMMENT 
-router.post("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.post("/:id", verifyToken, async (req, res) => {
     const newComment = new Comment({PostID: req.params.id, ...req.body});
 
     try{

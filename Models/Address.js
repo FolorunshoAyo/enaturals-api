@@ -13,7 +13,7 @@ const AddressSchema = new mongoose.Schema(
         phoneNo: {type: String, required: true},
         addPhoneNo: {type: String},
         additionalInfo:{type: String},
-        isDefault:{type: Boolean, required: true},
+        isDefault:{type: Boolean, default: false, required: true},
         address: {type: String, required: true},
         region: {type: String, required: true},
         city: {type: String, required: true}      

@@ -6,7 +6,7 @@ const router = require("express").Router();
 
 
 // POST REPLY
-router.post("/", verifyTokenAndAuthorization, async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
     const newReply = new Reply(req.body);
 
     try{
