@@ -48,7 +48,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 
 router.get("/newProducts", async (req, res) => {
     try{
-        const newProducts = await Product.find().sort({_id: -1}).limit(2);
+        const newProducts = await Product.find().sort({_id: -1}).limit(3);
 
         res.status(200).json(newProducts);
     }catch (err){
@@ -97,7 +97,7 @@ router.get("/category/:productName", async (req, res) => {
     const categoriesParams = req.query;
     const retrievedTags = [];
 
-    for (key in categoriesParams){
+    for (const key in categoriesParams){
         retrievedTags.push(categoriesParams[key]); 
     }
 

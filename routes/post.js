@@ -22,11 +22,23 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 
 //GET RECENT POSTS
 router.get("/newBlogPosts", async (req, res) => {
+
     try{
         const newBlogPosts = await BlogPost.find().sort({_id: -1}).limit(3);
 
         res.status(200).json(newBlogPosts);
     }catch (err){
+        res.status(500).json(err);
+    }
+});
+
+// GET POST BASED ON CATEGORIES
+router.get("/category/:categoryName", async (req, res) => {
+    try{
+        const fetchedBlogs = await BlogPost.find({ categories: { $all: req.params.categoryName } });
+
+        res.status(200).json(fetchedBlogs);
+    }catch(err){
         res.status(500).json(err);
     }
 });
@@ -55,20 +67,32 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-
-//GET POST
-router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+//GET BLOG POST
+router.get("/find/:blogTitle", async (req, res) => {
     try{
-        const BlogPosts = await BlogPost.findById(req.params.id);
+        const blogPost = await BlogPost.find({title: req.params.blogTitle});
 
-        res.status(200).json(BlogPost);
+        res.status(200).json(blogPost);
     }catch(err){
         res.status(500).json(err);
     }
 });
 
+
+
+// //GET POST
+// router.get("/find/:id", async (req, res) => {
+//     try{
+//         const BlogPosts = await BlogPost.findById(req.params.id);
+
+//         res.status(200).json(BlogPost);
+//     }catch(err){
+//         res.status(500).json(err);
+//     }
+// });
+
 // GET ALL POSTS
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
     const qNew = req.query.new;
     const qCategory = req.query.category;
 
@@ -76,7 +100,7 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
         let BlogPosts;
 
         if(qNew){
-            BlogPosts = await BlogPost.find().sort({createdAt: -1}).limit(1);
+            BlogPosts = await BlogPost.find().sort({createdAt: -1}).limit(2);
         }else if(qCategory){
             BlogPosts = await BlogPost.find({categories: {
                 $in: [qCategory]
@@ -89,6 +113,70 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
     }catch(err){
         res.status(500).json(err);
     }
-})
+});
+
+// GET RELATED POSTS
+router.get("/relatedPosts/:blogTitle", async (req, res) => {
+    const categoriesParams = req.query;
+    const retrievedTags = [];
+
+    for (const key in categoriesParams){
+        retrievedTags.push(categoriesParams[key]); 
+    }
+
+    try{
+        const relatedBlogs = await BlogPost.find({ categories: { $all: retrievedTags } }).sort({_id: -1}).limit(2);
+
+        // FILTER PRODUCT BY EXCEPTING THE PRODUCT NAME PARAM
+        const filterBlogs = relatedBlogs.filter(relatedBlog => relatedBlog.title !== req.params.blogTitle);
+
+        res.status(200).json(filterBlogs);
+    }catch(err){
+        res.status(500).json(err);
+    }
+});
+
+// SEARCH BLOG POSTS
+router.get("/search", verifyTokenAndAdmin, async (req, res) => {
+    const searchQuery = req.query.q;
+
+    try{
+        const searchedBlogPost = await BlogPost.find({
+            title: {
+                $regex: searchQuery,
+                $options: "i"
+            }
+        });
+
+        res.status(200).json(searchedBlogPost);
+    }catch(err){
+        res.status(500).json(err);
+    }
+});
+
+// COUNT ALL CATEGORIES OF POST
+router.get("/countCategories", async (req, res) => {
+
+    try{
+        const allBlogPosts = await BlogPost.find();
+        let allCategories = [];
+        let resultObj = {};
+        allBlogPosts.forEach(blogPost => {
+            allCategories = [...allCategories, ...blogPost.categories];
+        });
+
+        const map = allCategories.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
+
+        const noOfEachMappedCategory = [...map.entries()];
+
+        noOfEachMappedCategory.forEach((mappedCategory) => {
+            resultObj = {...resultObj, [mappedCategory[0]]: mappedCategory[1]};
+        });
+
+        res.status(200).json(resultObj);
+    }catch(err){
+        res.status(500).json(err);
+    }
+});
 
 module.exports = router;

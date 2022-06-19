@@ -29,6 +29,17 @@ router.get("/", async (req, res) => {
     }
 });
 
+//GET RECENT COMMENTS 
+router.get("/newComments", async (req, res) => {
+    try{
+        const newComments = await Comment.find().sort({ _id: -1 }).limit(3);
+
+        res.status(200).json(newComments);
+    }catch(error){
+        res.status(500).json(error);
+    }
+});
+
 // ADD COMMENT 
 router.post("/:id", verifyToken, async (req, res) => {
     const newComment = new Comment({PostID: req.params.id, ...req.body});
