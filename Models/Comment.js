@@ -9,7 +9,8 @@ const CommentSchema = new mongoose.Schema(
         PostID: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post'
-        }
+        },
+        postTitle: {type: String, required: true}
     },
     {timestamps: true}
 );

@@ -137,7 +137,7 @@ router.get("/relatedPosts/:blogTitle", async (req, res) => {
 });
 
 // SEARCH BLOG POSTS
-router.get("/search", verifyTokenAndAdmin, async (req, res) => {
+router.get("/search", async (req, res) => {
     const searchQuery = req.query.q;
 
     try{

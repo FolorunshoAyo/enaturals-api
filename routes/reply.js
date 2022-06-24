@@ -5,15 +5,16 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 const router = require("express").Router();
 
 
-// POST REPLY
-router.post("/", verifyToken, async (req, res) => {
-    const newReply = new Reply(req.body);
+// ADD REPLY 
+router.post("/:id", verifyToken, async (req, res) => {
+    const newReply = new Reply({CommentID: req.params.id, ...req.body});
 
-    try{
+    try {
         const savedReply = await newReply.save();
 
         res.status(200).json(savedReply);
-    }catch(err){
+    }
+    catch(err){
         res.status(500).json(err);
     }
 });
@@ -41,9 +42,9 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 //GET REPLYS FOR COMMENTS
 router.get("/:id", async (req, res) => {
     try{
-        const Replies = await Reply.find({CommentID: req.params.id}).sort({_id: -1});
+        const replies = await Reply.find({CommentID: req.params.id}).sort({_id: -1});
 
-        res.status(200).json(Replies);
+        res.status(200).json(replies);
     }catch(err){
         res.status(500).json(err);
     }
@@ -61,21 +62,6 @@ router.get("/", async (req, res) => {
         res.status(500).json(err);
     }
 })
-
-
-// ADD REPLY 
-router.post("/:id", verifyTokenAndAuthorization, async (req, res) => {
-    const newReply = new Reply({CommentID: req.params.id, ...req.body});
-
-    try {
-        const savedReply = await newReply.save();
-
-        res.status(200).json(savedReply);
-    }
-    catch(err){
-        res.status(500).json(err);
-    }
-});
 
 //DELETE REPLY
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {

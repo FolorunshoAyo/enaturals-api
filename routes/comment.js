@@ -8,8 +8,9 @@ const router = require("express").Router();
 // GET POST COMMENTS
 router.get("/:id", async (req, res) => {
     try{
-        const comments = await Comment.find({BlogPostID: req.params.id}).sort({_id: -1});
+        const comments = await Comment.find({PostID: req.params.id}).sort({_id: -1});
 
+        // ONLY ALLOW AUTHORIZED COMMENTS
         // const filteredComments = comments.filter(comment => comment.status !== "pending");
 
         res.status(200).json(comments);
@@ -30,9 +31,12 @@ router.get("/", async (req, res) => {
 });
 
 //GET RECENT COMMENTS 
-router.get("/newComments", async (req, res) => {
+router.get("/new/comments", async (req, res) => {
     try{
         const newComments = await Comment.find().sort({ _id: -1 }).limit(3);
+
+        // ONLY ALLOW AUTHORIZED COMMENTS
+        // const filteredComments = newComments.filter(comment => comment.status !== "pending");
 
         res.status(200).json(newComments);
     }catch(error){

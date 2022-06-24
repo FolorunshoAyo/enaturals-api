@@ -95,10 +95,10 @@ router.get("/", async (req, res) => {
 });
 
 //GET DEFAULT ADDRESS 
-router.get("/default", async (req, res) => {
+router.get("/default/:userID", async (req, res) => {
 
     try{
-        let defaultAddresss = await Address.find({isDefault: true});
+        let defaultAddresss = await Address.find({userId: req.params.userID, isDefault: true});
 
         res.status(200).json(defaultAddresss);
     }catch(err){

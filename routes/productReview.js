@@ -8,13 +8,13 @@ const {
 const router = require("express").Router();
 
 // ADD PRODUCT REVIEW
-router.post("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.post("/:id", verifyToken, async (req, res) => {
     const newReview = new ProductReview({ProductID: req.params.id, ...req.body});
 
     try{
-        const savedPost = await newReview.save();
+        const savedReview = await newReview.save();
 
-        res.status(200).json(savedPost);
+        res.status(200).json(savedReview);
     }catch(err){
         res.status(500).json(err);
     }

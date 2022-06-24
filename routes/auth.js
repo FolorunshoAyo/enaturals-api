@@ -65,5 +65,36 @@ router.get("/", verifyToken, (req, res) => {
     res.status(201).json("Welcome back");
 });
 
+// CHANGE PASSWORD
+
+router.post("/changepass", async (req, res) => {
+    try{
+        const user = await User.findOne({
+            username: req.body.username
+        });
+
+        const hashedPassword = CryptoJS.AES.decrypt(
+            user.password,
+            process.env.PASS_SEC
+        );
+
+        const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+
+        if(originalPassword !== req.body.formerPassword){
+            return res.status(401).json("Incorrect password");
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(user._id.toString(), {
+            $set: {
+                ...req.body, 
+                password: CryptoJS.AES.encrypt(req.body.newPassword, process.env.PASS_SEC).toString()
+            }
+        }, {new: true});
+
+        return res.status(200).json(updatedUser);
+    }catch(error){
+        return res.status(500).json(error);
+    }
+});
 
 module.exports = router;
