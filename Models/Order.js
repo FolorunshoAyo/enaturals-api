@@ -30,7 +30,6 @@ const OrderSchema = new mongoose.Schema(
             }
         ],
         amount: {type: Number, required: true},
-        transaction: {type: String, required: true},
         status: {type: String, default: "pending"}              
     },
     {timestamps: true}

@@ -1,4 +1,7 @@
 const User = require("../models/User");
+const Address = require("../models/Address");
+const Order = require("../models/Order");
+
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
 const router = require("express").Router();
@@ -29,6 +32,8 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     try{
         await User.findByIdAndDelete(req.params.id);
+        await Address.deleteMany({userId: req.params.id});
+        await Order.deleteMany({userID: req.params.id});
 
         res.status(200).json("User has been deleted");
     }catch(err){
