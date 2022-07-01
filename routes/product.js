@@ -102,7 +102,7 @@ router.get("/category/:productName", async (req, res) => {
     }
 
     try{
-        const relatedProducts = await Product.find({ categories: { $all: retrievedTags } });
+        const relatedProducts = await Product.find({ categories: { $in: retrievedTags } });
 
         // FILTER PRODUCT BY EXCEPTING THE PRODUCT NAME PARAM
         const filterProducts = relatedProducts.filter(relatedProduct => relatedProduct.productName !== req.params.productName);
@@ -147,9 +147,9 @@ router.get("/", async (req, res) => {
                 $lte: qMin
             }});
         }else if(qSortBy === "asc"){
-            products = await Product.find().sort({price: 1});
+            products = await Product.find().sort({price: 1, discountPrice: 1});
         }else if(qSortBy === "desc"){
-            products = await Product.find().sort({price: -1});
+            products = await Product.find().sort({price: -1, discountPrice: -1});
         }
         else{
             products = await Product.find().sort({createdAt: -1});

@@ -10,8 +10,10 @@ const ProductSchema = new mongoose.Schema(
         categories: { type: Array, required: true },
         size: {type: String, required: true},
         packingOptions: {type: Array},
-        inStock: {type: Boolean, required: true},       
-        price: {type: Number, required: true }                
+        inStock: {type: Boolean, required: true},
+        discount: {type: Boolean, default: false},       
+        price: {type: Number, required: true },
+        discountPrice: { type: Number, default: 0 }                
     },
     {timestamps: true}
 );

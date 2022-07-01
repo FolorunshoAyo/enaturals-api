@@ -48,10 +48,22 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 //GET ORDER
 router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
     try{
-        const orders = await Order.find({userId: req.params.id});
+        const orders = await Order.find({userID: req.params.id});
 
         res.status(200).json(orders);
     }catch(err){
+        res.status(500).json(err);
+    }
+});
+
+//GET RECENT ORDERS
+router.get("/newOrders", async (req, res) => {
+
+    try{
+        const newOrders = await Order.find().sort({_id: -1}).limit(5);
+
+        res.status(200).json(newOrders);
+    }catch (err){
         res.status(500).json(err);
     }
 });
