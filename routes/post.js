@@ -1,4 +1,6 @@
 const BlogPost = require("../Models/BlogPost");
+const Comment = require("../models/Comment");
+const Reply = require("../models/Reply");
 
 const { 
     verifyToken, 
@@ -60,6 +62,8 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     try{
         await BlogPost.findByIdAndDelete(req.params.id);
+        await Comment.deleteMany({PostID: req.params.id});
+        await Reply.deleteMany({PostID: req.params.id});
 
         res.status(200).json("BlogPost has been deleted");
     }catch(err){

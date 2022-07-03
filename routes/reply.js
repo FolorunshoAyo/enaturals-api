@@ -7,7 +7,9 @@ const router = require("express").Router();
 
 // ADD REPLY 
 router.post("/:id", verifyToken, async (req, res) => {
-    const newReply = new Reply({CommentID: req.params.id, ...req.body});
+    const postID = req.query.postID;
+
+    const newReply = new Reply({CommentID: req.params.id, postID, ...req.body});
 
     try {
         const savedReply = await newReply.save();

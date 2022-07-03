@@ -9,6 +9,10 @@ const ReplySchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Comment'
         },
+        PostID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post'
+        },
         status: {type: String, required: true, default: "pending"}
     },
     {timestamps: true}
