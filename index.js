@@ -43,7 +43,6 @@ const addressRoute = require("./routes/address");
     app.use("/api/pictures", picturesRoute);
     app.use("/api/videos", videosRoute);
     app.use("/api/address", addressRoute);
-
     
     app.listen(process.env.PORT || 5000, () => {
         console.log("Backend server running at port 5000");
