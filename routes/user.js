@@ -1,6 +1,6 @@
-const User = require("../models/User");
-const Address = require("../models/Address");
-const Order = require("../models/Order");
+const User = require("../models/User.js");
+const Address = require("../models/Address.js");
+const Order = require("../models/Order.js");
 
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
