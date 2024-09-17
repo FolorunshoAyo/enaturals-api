@@ -4,20 +4,20 @@ const mongoose = require("mongoose");
 const cors = require('cors');
 const dotenv = require("dotenv");
 
-const userRoute = require("./routes/user");
-const authRoute = require("./routes/auth");
-const productRoute = require("./routes/product");
-const orderRoute = require("./routes/order");
+const userRoute = require("../routes/user");
+const authRoute = require("../routes/auth");
+const productRoute = require("../routes/product");
+const orderRoute = require("../routes/order");
 // const reviewsRoute = require("./routes/reviews");
-const postRoute = require("./routes/post");
-const commentRoute = require("./routes/comment");
-const replyRoute = require("./routes/reply");
-const productReviewRoute = require("./routes/productReview");
-const slideRoute = require("./routes/slide");
-const testimonialRoute = require("./routes/testimonial");
-const picturesRoute = require("./routes/pictureGallery");
-const videosRoute = require("./routes/videoGallery");
-const addressRoute = require("./routes/address");
+const postRoute = require("../routes/post");
+const commentRoute = require("../routes/comment");
+const replyRoute = require("../routes/reply");
+const productReviewRoute = require("../routes/productReview");
+const slideRoute = require("../routes/slide");
+const testimonialRoute = require("../routes/testimonial");
+const picturesRoute = require("../routes/pictureGallery");
+const videosRoute = require("../routes/videoGallery");
+const addressRoute = require("../routes/address");
 
     dotenv.config();
 
@@ -44,6 +44,7 @@ const addressRoute = require("./routes/address");
     app.use("/api/videos", videosRoute);
     app.use("/api/address", addressRoute);
     
+    app.get('/', (req, res) => res.status(200).json({ message: 'Enaturals Backend API' }));
     app.listen(process.env.PORT || 5000, () => {
         console.log("Backend server running at port 5000");
     });
