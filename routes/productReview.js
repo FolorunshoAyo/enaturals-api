@@ -1,4 +1,4 @@
-const ProductReview = require("../Models/ProductReview");
+const ProductReview = require("../models/ProductReview");
 
 const { 
     verifyToken, 

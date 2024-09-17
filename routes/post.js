@@ -1,4 +1,4 @@
-const BlogPost = require("../Models/BlogPost");
+const BlogPost = require("../models/BlogPost");
 const Comment = require("../models/Comment");
 const Reply = require("../models/Reply");
 
